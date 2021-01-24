@@ -108,7 +108,7 @@
 	    <snapshotRepository>
 	      <id>nexus</id>
 	      <name>Mithun Technologies Snapshot Nexus Repository </name>
-	      <url>http://65.0.131.128:9980/mithuntechnologies/repository/flipkart-snapshot/</url>
+	      <url>http://65.0.176.155:8082/nexussolutions/repository/amazon-snapshot/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
