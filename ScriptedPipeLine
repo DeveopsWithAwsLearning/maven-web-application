@@ -1,0 +1,28 @@
+node('master'){
+    
+def mavenHome = tool name: "Maven 3.6.3"
+
+stage('Checkout code from git'){
+git branch: 'development', credentialsId: '6a702e87-4014-493d-a539-aa78b7605ab3', 
+url: 'https://github.com/DeveopsWithAwsLearning/maven-web-application.git'
+}
+
+stage('Build code with maven'){
+sh "${mavenHome}/bin/mvn clean package"
+}
+
+stage('Execute sonarqube reports'){
+sh "${mavenHome}/bin/mvn sonar:sonar"
+}
+
+stage('Build artifactory into nexus'){
+sh "${mavenHome}/bin/mvn deploy"
+}
+
+stage('Deploy application into tomcat')
+sshagent(['12ff3ec1-9f3d-4b91-a382-4e95aa0c6206']) {
+sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.232.27.63:/opt/apache-tomcat-9.0.41/webapps/"
+}
+
+}
+
