@@ -1,4 +1,4 @@
-node('master'){
+node('Nodes'){
     
 def mavenHome = tool name: "Maven 3.6.3"
 
