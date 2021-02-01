@@ -1,10 +1,14 @@
 pipeline{
     
-    agent any
+    //agent any
+    agent{
+    label 'Nodes'
+    }
     
     tools{
         maven 'Maven 3.6.3'
     }
+    
     triggers{
  pollSCM('* * * * *')
 }
