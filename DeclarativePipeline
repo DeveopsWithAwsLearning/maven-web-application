@@ -1,0 +1,110 @@
+pipeline{
+    
+    agent any
+    
+    tools{
+        maven 'Maven 3.6.3'
+    }
+    
+    stages{
+        
+        stage('Checkout code from git'){
+            
+         steps{
+           git branch: 'development', credentialsId: '6a702e87-4014-493d-a539-aa78b7605ab3', 
+           url: 'https://github.com/DeveopsWithAwsLearning/maven-web-application.git' 
+         }    
+            
+        }
+        
+        stage('Build code with maven'){
+            
+            steps{
+                sh "mvn clean package"
+            }
+        }
+        
+       stage('Check sonarqube reports'){
+           
+           steps{
+               sh "mvn sonar:sonar"
+           }
+           
+       }
+       
+       stage('Move aritifact into Nexus'){
+           
+           steps{
+               sh "mvn deploy"
+               
+           }
+       }
+       
+       stage('Deploy application into Tomcat'){
+       
+          steps{
+              
+             sshagent(['12ff3ec1-9f3d-4b91-a382-4e95aa0c6206']) {
+               sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@3.6.94.23:/opt/apache-tomcat-9.0.41/webapps/"
+             }     
+            
+            }
+       }
+    }
+    
+}
+pipeline{
+    
+    agent any
+    
+    tools{
+        maven 'Maven 3.6.3'
+    }
+    
+    stages{
+        
+        stage('Checkout code from git'){
+            
+         steps{
+           git branch: 'development', credentialsId: '6a702e87-4014-493d-a539-aa78b7605ab3', 
+           url: 'https://github.com/DeveopsWithAwsLearning/maven-web-application.git' 
+         }    
+            
+        }
+        
+        stage('Build code with maven'){
+            
+            steps{
+                sh "mvn clean package"
+            }
+        }
+        
+       stage('Check sonarqube reports'){
+           
+           steps{
+               sh "mvn sonar:sonar"
+           }
+           
+       }
+       
+       stage('Move aritifact into Nexus'){
+           
+           steps{
+               sh "mvn deploy"
+               
+           }
+       }
+       
+       stage('Deploy application into Tomcat'){
+       
+          steps{
+              
+             sshagent(['12ff3ec1-9f3d-4b91-a382-4e95aa0c6206']) {
+               sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@3.6.94.23:/opt/apache-tomcat-9.0.41/webapps/"
+             }     
+            
+            }
+       }
+    }
+    
+}
