@@ -5,6 +5,15 @@ pipeline{
     tools{
         maven 'Maven 3.6.3'
     }
+    triggers{
+ pollSCM('* * * * *')
+}
+
+options{
+    timestamps()
+    buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '2', daysToKeepStr: '', numToKeepStr: '2'))
+}
+
     
     stages{
         
